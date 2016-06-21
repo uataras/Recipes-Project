@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recipes</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jqueryUI.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/receipsApp.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/main.css">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-app="receiptApp" ng-controller="receiptCtrl">
+
+<div class="modal fade" id="modal-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><i class="fa fa-close"></i></button>
+                <h3 class="modal-title text-center">Форма для редактирования рецепта</h3>
+            </div>
+            <div class="modal-body">
+                <form role="form" name="updateForm">
+                    <div class="form-group">
+                        <label for="upd-name" class="col-md-12">Название блюда:</label>
+                        <input type="text" class="form-control" id="upd-name" name="upd-name" ng-model="upd.name"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="upd-time" class="col-md-12">Время приготовления:</label>
+                        <input type="text" class="form-control" id="upd-time" name="upd-time" ng-model="upd.time"
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="upd-ingridient" class="col-md-12">Ингридиенты:</label>
+                        <input type="text" class="form-control" id="upd-ingridient" name="upd-ingridient"
+                               ng-model="upd.ingridient" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="upd-description" class="col-md-12">Описание:</label>
+                        <input type="text" class="form-control" id="upd-description" name="upd-description"
+                               ng-model="upd.description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="upd-linkImg" class="col-md-12">Ссылка на изображение:</label>
+                        <input type="url" class="form-control" id="upd-linkImg" name="upd-linkImg"
+                               ng-model="upd.linkImg" required>
+                    </div>
+                    <button class="btn btn-warning" type="submit" ng-click="updateReceipt()">Обновить данные</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="wrapper">
+    <div class="container">
+        <header>
+            <div class="row">
+                <div class="col-md-12">
+                    <form role="form" name="companySearch" class="col-md-6 col-md-push-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="inputSearchComp" placeholder="Search" ng-model="keywords">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </header>
+    </div>
+    <div class="container">
+        <section class="context">
+            <div class="row">
+                <div class="aside">
+                    <div class="col-md-3">
+                        <form name="searchReceipt">
+                            <div class="form-group">
+                                <label for="name" class="col-md-12">Название блюда:</label>
+                                <input type="text" class="form-control" id="name" name="name" ng-model="rec.name"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label for="time" class="col-md-12">Время приготовления:</label>
+                                <input type="text" class="form-control" id="time" name="time" ng-model="rec.time"
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label for="ingridient" class="col-md-12">Ингридиенты:</label>
+                                <input type="text" class="form-control" id="ingridient" name="ingridient"
+                                       ng-model="rec.ingredient" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description" class="col-md-12">Описание:</label>
+                                <input type="text" class="form-control" id="description" name="description"
+                                       ng-model="rec.description" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="linkImg" class="col-md-12">Ссылка на изображение:</label>
+                                <input type="url" class="form-control" id="linkImg" name="linkImg" ng-model="rec.link"
+                                       required>
+                            </div>
+                            <button id="add-receipt" class="btn btn-default btn-block" type="submit"
+                                    ng-click="setReceipt()">Добавить рецепт
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row" ng-repeat="receipts in arrReceipts">
+                        <div class="col-md-4" ng-repeat="receipt in receipts | filter:keywords">
+                            <div class="thumbnail">
+                                <img src="{{receipt.link}}" alt="" width="300" height="200">
+                                <div class="caption">
+                                    <h3>{{receipt.name}}</h3>
+                                    <h4>{{receipt.time}}</h4>
+                                    <ul>Ингридиетны
+                                        <li ng-repeat="ing in receipt.ingredient">{{ing}}</li>
+                                    </ul>
+                                    <p>{{receipt.description}}</p>
+                                    <p>
+                                        <button class="btn btn-primary" type="button" href="#" data-toggle="modal"
+                                                data-target="#modal-1" ng-click="flipInput(receipt.id)">Редактировать
+                                        </button>
+                                        <button type="submit" class="btn btn-danger"
+                                                ng-click="deleteReceipt(receipt.id)">Удалить
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script src="js/bootstrap.js"></script>
+</body>
+</html>

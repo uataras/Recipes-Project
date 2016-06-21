@@ -1,0 +1,44 @@
+#wrapper header{
+	margin-top: 30px;
+	padding-bottom: 30px;
+	border-bottom: 2px solid #EEE;
+}
+
+#wrapper section.context{
+	margin-top: 30px;
+}
+
+#wrapper .aside > div{
+	border-right: 2px solid #EEE;
+}
+
+h3{
+	font: bold 20px/24px Arial, sans-serif;
+	padding: 5px 0;
+}
+h4{
+	font: bold 16px/18px Arial, sans-serif;
+	padding: 2px 0;
+}
+ul>li{
+	line-height: 18px;
+	margin-left: 15px;
+	list-style-type: square;
+}
+ul{
+	padding: 4px 0;
+}
+
+.deckgrid[deckgrid]::before {
+    content: '3 .column.column-1-3';
+    font-size: 0;
+    visibility: hidden;
+}
+
+.deckgrid .column {
+    float: left;
+}
+
+.deckgrid .column-1-3 {
+    width: 33%;
+}
